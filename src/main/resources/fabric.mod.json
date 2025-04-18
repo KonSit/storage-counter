@@ -1,0 +1,39 @@
+{
+	"schemaVersion": 1,
+	"id": "storage-counter",
+	"version": "${version}",
+	"name": "Storage Counter",
+	"description": "Resources to exel",
+	"authors": [
+		"Pacific kid!"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "MIT",
+	"icon": "assets/storage-counter/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"net.pacifickid.storagecounter.StorageCounter"
+		],
+		"fabric-datagen": [
+			"net.pacifickid.storagecounter.StorageCounterDataGenerator"
+		], "client": [
+			"net.pacifickid.storagecounter.StorageCounterClient"
+		]
+	},
+	"mixins": [
+		"storage-counter.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.16.13",
+		"minecraft": "~1.21.5",
+		"java": ">=21",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
