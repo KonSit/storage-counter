@@ -32,7 +32,8 @@ dependencies {
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-	
+
+	implementation('org.apache.poi:poi:4.1.1')
 }
 
 processResources {
