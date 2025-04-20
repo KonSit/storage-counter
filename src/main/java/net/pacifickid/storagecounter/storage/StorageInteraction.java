@@ -4,6 +4,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.AirBlockItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -14,7 +15,9 @@ public abstract class StorageInteraction {
     public static Map<String, Long> inventoryToMap (Inventory inventory, Map<String, Long> res) {
         for (int i = 0; i < inventory.size(); i++) {
             ItemStack stack = inventory.getStack(i);
-            if (!(stack.getItem() instanceof AirBlockItem))
+            if (stack.getItem() == Items.SHULKER_BOX) {
+
+            } else if (!(stack.getItem() instanceof AirBlockItem))
                 if (res.containsKey(stack.getItem().toString())) {
                     res.put(stack.getItem().toString(), stack.getCount() + res.get(stack.getItem().toString()));
                 } else {

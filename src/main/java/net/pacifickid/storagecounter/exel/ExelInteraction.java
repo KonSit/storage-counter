@@ -38,10 +38,10 @@ public abstract class ExelInteraction {
         sheet.autoSizeColumn(1);
 
         Path pathToFolder = FabricLoader.getInstance().getGameDir().resolve(StorageCounter.MOD_ID);
-        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy_HH:mm:ss");
+        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy_HH-mm-ss");
         String fileName = "exel_" + LocalDateTime.now().format(myFormatObj) + ".xlsx";
 
-        System.out.println(pathToFolder.toString() + "/" + fileName);
+        System.out.println(pathToFolder.toString() + File.separator + fileName);
 
         if (!pathToFolder.toFile().exists()) {
             pathToFolder.toFile().mkdir();

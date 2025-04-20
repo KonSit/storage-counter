@@ -2,12 +2,10 @@ package net.pacifickid.storagecounter;
 
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.text.Text;
 import net.pacifickid.storagecounter.exel.ExelInteraction;
-import net.pacifickid.storagecounter.storage.StorageInteraction;
 
 import static net.pacifickid.storagecounter.storage.StorageInteraction.countAround;
 
@@ -31,5 +29,6 @@ public class StorageCounterClient implements ClientModInitializer {
                                         return 1;
                                     }))));
         });
+
     }
 }
