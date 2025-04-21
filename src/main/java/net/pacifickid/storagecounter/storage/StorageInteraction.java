@@ -1,8 +1,12 @@
 package net.pacifickid.storagecounter.storage;
 
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.BundleContentsComponent;
+import net.minecraft.component.type.ContainerComponent;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.AirBlockItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.math.BlockPos;
@@ -12,23 +16,44 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class StorageInteraction {
-    public static Map<String, Long> inventoryToMap (Inventory inventory, Map<String, Long> res) {
-        for (int i = 0; i < inventory.size(); i++) {
-            ItemStack stack = inventory.getStack(i);
-            if (stack.getItem() == Items.SHULKER_BOX) {
-
-            } else if (!(stack.getItem() instanceof AirBlockItem))
-                if (res.containsKey(stack.getItem().toString())) {
-                    res.put(stack.getItem().toString(), stack.getCount() + res.get(stack.getItem().toString()));
-                } else {
-                    res.put(stack.getItem().toString(), (long) stack.getCount());
-                }
+    private static Map<Item, Long> includeStackToMap (ItemStack stack, Map<Item, Long> res) {
+        if (stack.getItem() == Items.SHULKER_BOX) {
+            ContainerComponent container = stack.get(DataComponentTypes.CONTAINER);
+            if (container == null) {
+                return res;
+            }
+            Iterable<ItemStack> shulkerInventory = container.iterateNonEmpty();
+            for (ItemStack shulkerStack : shulkerInventory) {
+                includeStackToMap(shulkerStack, res);
+            }
+        } else if (stack.getItem() == Items.BUNDLE) {
+            BundleContentsComponent contents = stack.get(DataComponentTypes.BUNDLE_CONTENTS);
+            if (contents == null) {
+                return res;
+            }
+            Iterable<ItemStack> items = contents.iterate();
+            for (ItemStack item : items) {
+                includeStackToMap(item, res);
+            }
+        } else if (!(stack.getItem() instanceof AirBlockItem)) {
+            if (res.containsKey(stack.getItem())) {
+                res.put(stack.getItem(), stack.getCount() + res.get(stack.getItem()));
+            } else {
+                res.put(stack.getItem(), (long) stack.getCount());
+            }
         }
         return res;
     }
 
-    public static Map<String, Long> countAround (PlayerEntity player, int r, int h) {
-        Map<String, Long> res = new HashMap<String, Long>();
+    public static Map<Item, Long> inventoryToMap (Inventory inventory, Map<Item, Long> res) {
+        for (int i = 0; i < inventory.size(); i++) {
+            includeStackToMap(inventory.getStack(i), res);
+        }
+        return res;
+    }
+
+    public static Map<Item, Long> countAround (PlayerEntity player, int r, int h) {
+        Map<Item, Long> res = new HashMap<Item, Long>();
         BlockPos center = player.getBlockPos();  // позиция игрока
         World world = player.getWorld();
         for (int dx = -r; dx <= r; dx++) {
@@ -36,7 +61,7 @@ public abstract class StorageInteraction {
                 for (int dz = -r; dz <= r; dz++) {
                     BlockPos pos = center.add(dx, dy, dz);
                     if (world.getBlockEntity(pos) instanceof Inventory) {
-                        res = inventoryToMap((Inventory) world.getBlockEntity(pos), res);
+                        inventoryToMap((Inventory) world.getBlockEntity(pos), res);
                     }
                 }
             }

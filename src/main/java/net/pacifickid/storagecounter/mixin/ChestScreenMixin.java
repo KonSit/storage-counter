@@ -3,6 +3,7 @@ package net.pacifickid.storagecounter.mixin;
 import net.fabricmc.fabric.api.client.screen.v1.Screens;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.item.Item;
 import net.minecraft.text.Text;
 import net.pacifickid.storagecounter.exel.ExelInteraction;
 import net.pacifickid.storagecounter.storage.StorageInteraction;
@@ -20,7 +21,7 @@ public abstract class ChestScreenMixin {
     private void onRender(DrawContext context, int mouseX, int mouseY, float deltaTicks, CallbackInfo ci) {
         GenericContainerScreen screen = (GenericContainerScreen) (Object) this;
         Screens.getButtons(screen).add(new ButtonWidget.Builder(Text.literal("E"), (button) -> {
-            ExelInteraction.toExel(StorageInteraction.inventoryToMap(screen.getScreenHandler().getInventory(), new HashMap<String, Long>()));
+            ExelInteraction.toExel(StorageInteraction.inventoryToMap(screen.getScreenHandler().getInventory(), new HashMap<Item, Long>()));
         }).position(5, 5).size(15, 15).build());
     }
 }

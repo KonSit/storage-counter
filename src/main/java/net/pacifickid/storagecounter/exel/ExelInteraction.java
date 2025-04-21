@@ -1,6 +1,7 @@
 package net.pacifickid.storagecounter.exel;
 
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.item.Item;
 import net.pacifickid.storagecounter.StorageCounter;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -17,7 +18,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 public abstract class ExelInteraction {
-    public static boolean toExel(Map<String, Long> res) {
+    public static boolean toExel(Map<Item, Long> res) {
         if (res.isEmpty()) {
             return false;
         }
@@ -26,11 +27,11 @@ public abstract class ExelInteraction {
         Sheet sheet = workbook.createSheet("Data");
 
         int rowId = 0;
-        for (Map.Entry<String, Long> entry : res.entrySet()) {
+        for (Map.Entry<Item, Long> entry : res.entrySet()) {
             Row row = sheet.createRow(rowId++);
             Cell cellKey = row.createCell(0);
             Cell cellValue = row.createCell(1);
-            cellKey.setCellValue(entry.getKey());
+            cellKey.setCellValue(entry.getKey().toString());
             cellValue.setCellValue(entry.getValue().toString());
         }
 
