@@ -36,11 +36,7 @@ public abstract class StorageInteraction {
                 includeStackToMap(item, res);
             }
         } else if (!(stack.getItem() instanceof AirBlockItem)) {
-            if (res.containsKey(stack.getItem())) {
-                res.put(stack.getItem(), stack.getCount() + res.get(stack.getItem()));
-            } else {
-                res.put(stack.getItem(), (long) stack.getCount());
-            }
+            res.merge(stack.getItem(), (long) stack.getCount(), Long::sum);
         }
         return res;
     }

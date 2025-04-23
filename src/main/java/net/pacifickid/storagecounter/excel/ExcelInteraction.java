@@ -1,4 +1,4 @@
-package net.pacifickid.storagecounter.exel;
+package net.pacifickid.storagecounter.excel;
 
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.item.Item;
@@ -17,8 +17,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
-public abstract class ExelInteraction {
-    public static boolean toExel(Map<Item, Long> res) {
+public abstract class ExcelInteraction {
+    public static boolean toExcel(Map<Item, Long> res) {
         if (res.isEmpty()) {
             return false;
         }
@@ -40,7 +40,7 @@ public abstract class ExelInteraction {
 
         Path pathToFolder = FabricLoader.getInstance().getGameDir().resolve(StorageCounter.MOD_ID);
         DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy_HH-mm-ss");
-        String fileName = "exel_" + LocalDateTime.now().format(myFormatObj) + ".xlsx";
+        String fileName = "excel_" + LocalDateTime.now().format(myFormatObj) + ".xlsx";
 
         System.out.println(pathToFolder.toString() + File.separator + fileName);
 

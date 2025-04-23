@@ -5,7 +5,7 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.item.Item;
 import net.minecraft.text.Text;
-import net.pacifickid.storagecounter.exel.ExelInteraction;
+import net.pacifickid.storagecounter.excel.ExcelInteraction;
 import net.pacifickid.storagecounter.storage.StorageInteraction;
 import org.spongepowered.asm.mixin.Mixin;
 import net.minecraft.client.gui.screen.ingame.GenericContainerScreen;
@@ -21,7 +21,7 @@ public abstract class ChestScreenMixin {
     private void onRender(DrawContext context, int mouseX, int mouseY, float deltaTicks, CallbackInfo ci) {
         GenericContainerScreen screen = (GenericContainerScreen) (Object) this;
         Screens.getButtons(screen).add(new ButtonWidget.Builder(Text.literal("E"), (button) -> {
-            ExelInteraction.toExel(StorageInteraction.inventoryToMap(screen.getScreenHandler().getInventory(), new HashMap<Item, Long>()));
+            ExcelInteraction.toExcel(StorageInteraction.inventoryToMap(screen.getScreenHandler().getInventory(), new HashMap<Item, Long>()));
         }).position(5, 5).size(15, 15).build());
     }
 }
