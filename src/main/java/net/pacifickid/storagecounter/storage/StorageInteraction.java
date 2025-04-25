@@ -1,5 +1,6 @@
 package net.pacifickid.storagecounter.storage;
 
+import net.minecraft.block.entity.ShulkerBoxBlockEntity;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.BundleContentsComponent;
 import net.minecraft.component.type.ContainerComponent;
@@ -13,6 +14,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public abstract class StorageInteraction {
@@ -48,6 +50,13 @@ public abstract class StorageInteraction {
         return res;
     }
 
+    public static Map<Item, Long> inventoryToMap (List<ItemStack> stacks, Map<Item, Long> res) {
+        for (ItemStack stack : stacks) {
+            includeStackToMap(stack, res);
+        }
+        return res;
+    }
+
     public static Map<Item, Long> countAround (PlayerEntity player, int r, int h) {
         Map<Item, Long> res = new HashMap<Item, Long>();
         BlockPos center = player.getBlockPos();  // позиция игрока
@@ -65,8 +74,18 @@ public abstract class StorageInteraction {
         return res;
     }
 
-    /*public static Map<String, Integer> countForCord (BlockPos blockPos1, BlockPos blockPos2) {
-        Map<String, Integer> res = new HashMap<String, Integer>();
-        for (int dx )
-    }*/
+    public static Map<Item, Long> countForCord (World world, BlockPos blockPos1, BlockPos blockPos2) {
+        Map<Item, Long> res = new HashMap<Item, Long>();
+        for (int dx = 0; dx <= blockPos2.getX() - blockPos1.getX(); dx++) {
+            for (int dy = 0; dy <= blockPos2.getY() - blockPos1.getY(); dy++) {
+                for (int dz = 0; dz <= blockPos2.getZ() - blockPos1.getZ(); dz++) {
+                    BlockPos pos = blockPos1.add(dx, dy, dz);
+                    if (world.getBlockEntity(pos) instanceof Inventory) {
+                        inventoryToMap((Inventory) world.getBlockEntity(pos), res);
+                    }
+                }
+            }
+        }
+        return res;
+    }
 }
