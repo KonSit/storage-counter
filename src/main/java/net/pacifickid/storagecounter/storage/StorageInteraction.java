@@ -1,15 +1,12 @@
 package net.pacifickid.storagecounter.storage;
 
-import net.minecraft.block.entity.ShulkerBoxBlockEntity;
+import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.BundleContentsComponent;
 import net.minecraft.component.type.ContainerComponent;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
-import net.minecraft.item.AirBlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.item.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -19,7 +16,8 @@ import java.util.Map;
 
 public abstract class StorageInteraction {
     private static Map<Item, Long> includeStackToMap (ItemStack stack, Map<Item, Long> res) {
-        if (stack.getItem() == Items.SHULKER_BOX) {
+        if (stack.getItem() instanceof BlockItem blockItem
+                && blockItem.getBlock() instanceof ShulkerBoxBlock) {
             ContainerComponent container = stack.get(DataComponentTypes.CONTAINER);
             if (container == null) {
                 return res;
@@ -28,7 +26,7 @@ public abstract class StorageInteraction {
             for (ItemStack shulkerStack : shulkerInventory) {
                 includeStackToMap(shulkerStack, res);
             }
-        } else if (stack.getItem() == Items.BUNDLE) {
+        } else if (stack.getItem() instanceof BundleItem) {
             BundleContentsComponent contents = stack.get(DataComponentTypes.BUNDLE_CONTENTS);
             if (contents == null) {
                 return res;
@@ -59,7 +57,7 @@ public abstract class StorageInteraction {
 
     public static Map<Item, Long> countAround (PlayerEntity player, int r, int h) {
         Map<Item, Long> res = new HashMap<Item, Long>();
-        BlockPos center = player.getBlockPos();  // позиция игрока
+        BlockPos center = player.getBlockPos();
         World world = player.getWorld();
         for (int dx = -r; dx <= r; dx++) {
             for (int dy = -h; dy <= h; dy++) {
